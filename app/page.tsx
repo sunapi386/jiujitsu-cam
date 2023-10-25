@@ -42,7 +42,7 @@ export default function Home() {
           >
             Refine your <br />
             <span className="text-[#407BBF]">Jiujitsu</span>
-            <span className="font-inter text-[#407BBF]"> techniques</span>
+            <span className="font-inter text-[#407BBF]"> with AI</span>
           </motion.h1>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
