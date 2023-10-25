@@ -2,26 +2,26 @@ import "../styles/globals.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liftoff - AI-Powered Mock Interviews",
+  title: "jiujitsu.cam - AI-Powered Movement Feedback",
   openGraph: {
-    title: "Liftoff - AI-Powered Mock Interviews",
+    title: "jiujitsu.cam - AI-Powered Movement Feedback",
     description:
-      "Liftoff is an AI-powered mock interview platform that helps you practice for your next job interview.",
+      "jiujitsu.cam is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.",
     images: [
       {
-        url: "https://demo.useliftoff.com/opengraph-image",
+        url: "https://jiujitsu.cam/opengraph-image",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Liftoff - AI-Powered Mock Interviews",
+    title: "jiujitsu.cam - AI-Powered Movement Feedback",
     description:
-      "Liftoff is an AI-powered mock interview platform that helps you practice for your next job interview.",
-    images: ["https://demo.useliftoff.com/opengraph-image"],
-    creator: "@tmeyer_me",
+      "jiujitsu.cam is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.",
+    images: ["https://jiujitsu.cam/opengraph-image"],
+    creator: "@sunapi386",
   },
-  metadataBase: new URL("https://demo.useliftoff.com"),
+  metadataBase: new URL("https://jiujitsu.cam"),
   themeColor: "#FFF",
 };
 

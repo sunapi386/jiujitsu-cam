@@ -60,15 +60,15 @@ jiujitsu.cam is a web application that uses webcam to capture video of your jiuj
 
 ## How it Works
 
-1. jiujitsu.cam processes the video and extracts human pose estimation, it identifies key points on a human body in video, such as the joints (e.g., elbows, knees) and then connects these points to form a stick figure representation of the person.
+1. **Pose Estimation**: jiujitsu.cam processes the video to extract human pose estimation. It identifies key body points, such as joints (e.g., elbows, knees), and connects these points, creating a stick figure representation of the user.
 
-1. the stick figure is then compared to a library of reference stick figures to identify the differences between the user's movements and the reference movements, classified by the type of movement (e.g., armbar, triangle, etc.).
+1. **Movement Comparison**: The derived stick figure is cross-referenced with a library of standard jiujitsu movements. This library helps determine deviations between the user's movements and ideal reference movements, categorized by specific techniques (e.g., armbar, triangle).
 
-1. The library of transitions is generated using a combination of computer vision and motion capture technology, with expert jiujitsu practitioners performing the movements and annotated by a team of jiujitsu experts.
+1. **Library Creation**: Computer vision and motion capture of expert jiujitsu practitioners performing reference movements, which are then annotated to use as training data for the AI model.
 
-1. The differences are then synthesized to text, using large-language-model to provide feedback on the user's movements, such as the angle of the arm, the position of the legs, etc.
+1. **AI-driven Feedback**: Noted differences are converted into textual feedback using large-language-models (LLMs). This feedback suggests improvements, such as how the arm's angle or the leg's should be positioned during a move, or how the user's weight should be distributed.
 
-1. The text is then synthesized to speech using text-to-speech technology, and a coaching video is played back to the user.
+1. **Coaching Playback**: This textual feedback is transformed into audible advice using text-to-speech technology. Consequently, a tailored coaching video offers the user real-time guidance on refining their techniques.
 
 ## Author
 
