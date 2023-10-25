@@ -1,18 +1,17 @@
-<a href="https://demo.useliftoff.com">
-  <img alt="Liftoff – AI-Powered Mock Interviews" src="https://demo.useliftoff.com/opengraph-image">
-  <h1 align="center">Liftoff Interviews</h1>
+<a href="https://demo.jiujitsu.cam">
+  <h1 align="center">jiujitsu.cam</h1>
 </a>
 
 <p align="center">
-  Mock Interview Simulator with AI-Powered Feedback
+  AI-Powered Jiujitsu Movement Feedback Tool
 </p>
 
 <p align="center">
-  <a href="https://twitter.com/tmeyer_me">
-    <img src="https://img.shields.io/twitter/follow/tmeyer_me?style=flat&label=Follow&logo=twitter&color=0bf&logoColor=fff" alt="Tyler Meyer's follower count" />
+  <a href="https://twitter.com/sunapi386">
+    <img src="https://img.shields.io/twitter/follow/sunapi386?style=flat&label=Follow&logo=twitter&color=0bf&logoColor=fff" alt="sunapi386's follower count" />
   </a>
-  <a href="https://github.com/Tameyer41/liftoff">
-    <img src="https://img.shields.io/github/stars/Tameyer41/liftoff?label=Tameyer41%2Fliftoff" alt="Liftoff repo star count" />
+  <a href="https://github.com/sunapi386/jiujitsu-cam">
+    <img src="https://img.shields.io/github/stars/sunapi386/jiujitsu-cam?label=sunapi386%2Fjiujitsu-cam" alt="jiujitsu-cam repo star count" />
   </a>
 </p>
 
@@ -20,66 +19,58 @@
   <a href="#introduction"><strong>Introduction</strong></a> ·
   <a href="#one-click-deploy"><strong>One-click Deploy</strong></a> ·
   <a href="#tech-stack--features"><strong>Tech Stack + Features</strong></a> ·
+  <a href="#how-it-works"><strong>How it Works</strong></a> ·
   <a href="#author"><strong>Author</strong></a>
 </p>
 <br/>
 
 ## Introduction
 
-Liftoff is an interview preparation tool that provides AI feedback on your mock interviews.
-
-## One-click Deploy
-
-You can deploy this template to Vercel with the button below:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/tameyer41/clone?demo-title=Liftoff%20%E2%80%93%C2%A0AI%20Mock%20Interview%20Simulator&demo-description=Liftoff%20is%20an%20interview%20preparation%20tool%20that%20provides%20AI%20feedback%20on%20your%20mock%20interviews%2C%20built%20with%20OpenAI%20Whisper%20and%20GPT.&demo-url=https%3A%2F%2Fdemo.useliftoff.com%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F5TbjLXmeKdo2rURpnjIEqn%2Fc7c8fc350183e8cd3c819d172c0005ac%2F68747470733a2f2f696b2e696d6167656b69742e696f2f396b6d3732617371752f436c65616e53686f745f323032332d30352d33315f61745f31322e34332e35&project-name=Liftoff%20%E2%80%93%C2%A0AI%20Mock%20Interview%20Simulator&repository-name=liftoff&repository-url=https%3A%2F%2Fgithub.com%2FTameyer41%2Fliftoff&from=templates&skippable-integrations=1&env=OPENAI_API_KEY&envDescription=Get%20your%20OpenAI%20API%20key%20here%3A&envLink=https%3A%2F%2Fplatform.openai.com%2Faccount%2Fapi-keys)
-
-You can also clone & create this repo locally with the following command:
-
-```bash
-npx create-next-app liftoff --example "https://github.com/Tameyer41/liftoff"
-```
+jiujitsu.cam is a web application that uses webcam to capture video of your jiujitsu movements and provides AI feedback to help you improve.
 
 ## Tech Stack + Features
 
-![Landing Page](https://ik.imagekit.io/9km72asqu/CleanShot_2023-05-31_at_12.43.54_svKkqF7dA.png?updatedAt=1685551454273)
-
-![Interview Selection](https://ik.imagekit.io/9km72asqu/CleanShot_2023-05-31_at_13.35.55_xohCRNMlJ.png?updatedAt=1685554576155)
-
 ### Frameworks
 
-- [Next.js](https://nextjs.org/) – React framework for building performant apps with the best developer experience
+- [Next.js](https://nextjs.org/) – React framework for building performant applications
 
 ### Platforms
 
-- [Vercel](https://vercel.com/) – Easily preview & deploy changes with git
-- [Upstash](https://upstash.com/) - Serverless Data Platform (here using serverless Redis for rate limiting)
+- [Vercel](https://vercel.com/) – Deployment platform integrated with git
+- [Upstash](https://upstash.com/) - Serverless Data Platform (utilizing serverless Redis for rate limiting)
 
 ### UI
 
-- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development
-- [Framer Motion](https://framer.com/motion) – Motion library for React to animate components with ease
-- [`ImageResponse`](https://beta.nextjs.org/docs/api-reference/image-response) – Generate dynamic Open Graph images at the edge
-- [HeadlessUI](https://headlessui.com/) - Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS
+- [Tailwind CSS](https://tailwindcss.com/) – Rapid UI development using utility-first CSS framework
+- [Framer Motion](https://framer.com/motion) – React motion library for animations
+- [`ImageResponse`](https://beta.nextjs.org/docs/api-reference/image-response) – Generating dynamic Open Graph images at the edge
+- [HeadlessUI](https://headlessui.com/) - Accessible UI components for integration with Tailwind CSS
 
 ### Code Quality
 
-- [TypeScript](https://www.typescriptlang.org/) – Static type checker for end-to-end typesafety
-- [Prettier](https://prettier.io/) – Opinionated code formatter for consistent code style
-- [ESLint](https://eslint.org/) – Pluggable linter for Next.js and TypeScript
+- [TypeScript](https://www.typescriptlang.org/) – Static type checking for robust code
+- [Prettier](https://prettier.io/) – Consistent code formatting
+- [ESLint](https://eslint.org/) – Linting tool for Next.js and TypeScript
 
 ### Miscellaneous
 
-- [FFMPEG.WASM](https://ffmpegwasm.netlify.app/) – Transcode video/audio files
+- [FFMPEG.WASM](https://ffmpegwasm.netlify.app/) – Video/audio file transcoding
 - [React Webcam](https://github.com/mozmorris/react-webcam) - Webcam component for React
-- [Stripe Gradient Animation](https://whatamesh.vercel.app/) - [@jordienr](https://twitter.com/jordienr) released a Mesh Gradient that uses WebGL and animates a beautiful gradient
+- [Stripe Gradient Animation](https://whatamesh.vercel.app/) - Beautiful gradient animation using WebGL by [@jordienr](https://twitter.com/jordienr)
 
-## How it all works
+## How it Works
 
-Liftoff uses FFmpeg to transcode the raw video into MP3. Chrome, Safari, and Firefox all record with different codecs, and FFmpeg is great for standardizing them.
+1. jiujitsu.cam processes the video and extracts human pose estimation, it identifies key points on a human body in video, such as the joints (e.g., elbows, knees) and then connects these points to form a stick figure representation of the person.
 
-We then send the audio directly to be transcribed by OpenAI's Whisper endpoint, and then stream feedback from the edge using OpenAI's gpt-3.5-turbo.
+1. the stick figure is then compared to a library of reference stick figures to identify the differences between the user's movements and the reference movements, classified by the type of movement (e.g., armbar, triangle, etc.).
+
+1. The library of transitions is generated using a combination of computer vision and motion capture technology, with expert jiujitsu practitioners performing the movements and annotated by a team of jiujitsu experts.
+
+1. The differences are then synthesized to text, using large-language-model to provide feedback on the user's movements, such as the angle of the arm, the position of the legs, etc.
+
+1. The text is then synthesized to speech using text-to-speech technology, and a coaching video is played back to the user.
 
 ## Author
 
-- Tyler Meyer ([@tmeyer_me](https://twitter.com/tmeyer_me))
+- Jason Sun ([@sunapi386](https://twitter.com/sunapi386))
+- Special thanks to Tyler Meyer ([@tmeyer_me](https://twitter.com/tmeyer_me)) for the foundational work on his project to build an AI interviewer, which inspired me to build this project.
