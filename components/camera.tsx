@@ -6,6 +6,7 @@ import {
   FilesetResolver,
   DrawingUtils,
 } from "@mediapipe/tasks-vision";
+import { Switch } from "@headlessui/react";
 // https://developers.google.com/mediapipe/solutions/vision/pose_landmarker/web_js#video
 
 export default function CameraBox() {
@@ -13,8 +14,8 @@ export default function CameraBox() {
   const webcamRef = useRef<Webcam | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastVideoTime = useRef(-1);
+  const [mirror, setMirror] = useState(false);
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [seconds, setSeconds] = useState(50);
@@ -25,11 +26,6 @@ export default function CameraBox() {
   const [isVisible, setIsVisible] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
   const poseLandmarker = useRef<PoseLandmarker | null>(null);
-  let runningMode = "IMAGE";
-  let enableWebcamButton: HTMLButtonElement;
-  const videoHeight = "360px";
-  const videoWidth = "480px";
-  const hasGetUserMedia = !!navigator.mediaDevices?.getUserMedia;
   const [predictionsEnabled, setPredictionsEnabled] = useState(false);
   const [poseLandmarkerLoaded, setPoseLandmarkerLoaded] = useState(false);
 
@@ -47,30 +43,42 @@ export default function CameraBox() {
       let startTimeMs = performance.now();
       const drawingUtils = new DrawingUtils(canvasCtx);
       lastVideoTime.current = webcamRef.current!.video?.currentTime!;
+
       poseLandmarker.current!.detectForVideo(
         webcamRef.current!.video!,
         startTimeMs,
         (result) => {
-          canvasCtx.save();
+          canvasCtx.save(); // Saving the current state of the canvas
+
+          // Setting up the transformation for mirroring
+          if (mirror) {
+            canvasCtx.scale(-1, 1); // This mirrors the content
+            canvasCtx.translate(-canvasRef.current!.width, 0); // This offsets the mirrored result back into view
+          }
+          // Clearing the entire canvas
           canvasCtx.clearRect(
             0,
             0,
             canvasRef.current!.width,
             canvasRef.current!.height
           );
+
           for (const landmark of result.landmarks) {
             drawingUtils.drawLandmarks(landmark, {
               radius: (data) =>
                 DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
             });
+
             drawingUtils.drawConnectors(
               landmark,
               PoseLandmarker.POSE_CONNECTIONS
             );
           }
-          canvasCtx.restore();
+
+          canvasCtx.restore(); // Restoring the original state of the canvas, which undoes the mirroring transformation
         }
       );
+
       // Check the active flag and recursively request the next animation frame
       if (isActive.current) {
         requestAnimationFrame(processFrame);
@@ -79,7 +87,7 @@ export default function CameraBox() {
 
     // Start the loop
     processFrame();
-  }, [canvasRef, webcamRef, lastVideoTime, poseLandmarker]);
+  }, [mirror]);
 
   useEffect(() => {
     const createPoseLandmarker = async () => {
@@ -167,8 +175,35 @@ export default function CameraBox() {
             <div className="w-full flex flex-col max-w-[1080px] mx-auto justify-center">
               <h2 className="text-2xl font-semibold text-left text-[#1D2B3A] mb-2"></h2>
               <span className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal mb-4">
-                Camera
+                Settings
               </span>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.5,
+                  duration: 0.15,
+                  ease: [0.23, 1, 0.82, 1],
+                }}
+                className="flex flex-row space-x-1 mt-4 items-center"
+              >
+                <Switch
+                  checked={mirror}
+                  onChange={setMirror}
+                  className={`${
+                    mirror ? "bg-blue-600" : "bg-gray-200"
+                  } relative inline-flex h-6 w-11 items-center rounded-full`}
+                >
+                  <span
+                    className={`${
+                      mirror ? "translate-x-6" : "translate-x-1"
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                  />
+                </Switch>
+                <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
+                  Mirror
+                </p>
+              </motion.div>
               <motion.div
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
@@ -218,12 +253,13 @@ export default function CameraBox() {
                     </div>
                   )}
                   <Webcam
+                    mirrored={mirror}
                     audio
                     muted
                     ref={webcamRef}
                     videoConstraints={videoConstraints}
                     onUserMedia={handleUserMedia}
-                    onUserMediaError={(error) => {
+                    onUserMediaError={() => {
                       setRecordingPermission(false);
                     }}
                     className="absolute z-10 min-h-[100%] min-w-[100%] h-auto w-auto object-cover"
@@ -279,7 +315,7 @@ export default function CameraBox() {
                 </svg>
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
                   Video is not stored on our servers, it is solely used for
-                  transcription.
+                  detection.
                 </p>
               </motion.div>
             </div>
