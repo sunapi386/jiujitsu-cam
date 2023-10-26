@@ -1,4 +1,4 @@
-<a href="https://demo.jiujitsu.cam">
+<a href="https://jiujitsu.cam">
   <h1 align="center">jiujitsu.cam</h1>
 </a>
 
