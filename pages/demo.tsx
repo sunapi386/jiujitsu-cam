@@ -14,9 +14,6 @@ const Demo: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-4xl">
-        Pose detection using the MediaPipe PoseLandmarker task
-      </h1>
       <CameraBox />
       {/* <section ref={demosSectionRef} className="invisible">
         <video ref={videoRef} controls autoPlay playsInline muted loop />

@@ -12,17 +12,7 @@ export default function CameraBox() {
   const [loading, setLoading] = useState(true);
   const webcamRef = useRef<Webcam | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const canvasCtx = canvasRef.current?.getContext("2d");
-
-  useEffect(() => {
-    const canvasCtx = canvasRef.current?.getContext("2d");
-
-    // Only create an instance of DrawingUtils if the context is available.
-    if (canvasCtx) {
-      const drawingUtils = new DrawingUtils(canvasCtx);
-      // ... Use drawingUtils here or set to state for later use.
-    }
-  }, []); // Empty dependency array ensures this runs only once after the component mounts.
+  const lastVideoTime = useRef(-1);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [capturing, setCapturing] = useState(false);
@@ -31,19 +21,54 @@ export default function CameraBox() {
   const [videoEnded, setVideoEnded] = useState(false);
   const [recordingPermission, setRecordingPermission] = useState(true);
   const [cameraLoaded, setCameraLoaded] = useState(false);
-  const vidRef = useRef<HTMLVideoElement>(null);
+  //   const vidRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
-  let poseLandmarker = useRef<PoseLandmarker | null>(null);
+  const poseLandmarker = useRef<PoseLandmarker | null>(null);
   let runningMode = "IMAGE";
   let enableWebcamButton: HTMLButtonElement;
-  let webcamRunning: Boolean = false;
   const videoHeight = "360px";
   const videoWidth = "480px";
+  const hasGetUserMedia = !!navigator.mediaDevices?.getUserMedia;
+  const [predictionsEnabled, setPredictionsEnabled] = useState(false);
+  const [poseLandmarkerLoaded, setPoseLandmarkerLoaded] = useState(false);
 
   // Before we can use PoseLandmarker class we must wait for it to finish
   // loading. Machine Learning models can be large and take a moment to
   // get everything needed to run.
+
+  const detectPoseInRealTime = useCallback(async () => {
+    console.log("Detecting...");
+    const canvasCtx = canvasRef.current!.getContext("2d")!;
+
+    // Now let's start detecting the stream.
+    let startTimeMs = performance.now();
+    const drawingUtils = new DrawingUtils(canvasCtx);
+    lastVideoTime.current = webcamRef.current!.video?.currentTime!;
+    poseLandmarker.current!.detectForVideo(
+      webcamRef.current!.video!,
+      startTimeMs,
+      (result) => {
+        canvasCtx.save();
+        canvasCtx.clearRect(
+          0,
+          0,
+          canvasRef.current!.width,
+          canvasRef.current!.height
+        );
+        for (const landmark of result.landmarks) {
+          drawingUtils.drawLandmarks(landmark, {
+            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+          });
+          drawingUtils.drawConnectors(
+            landmark,
+            PoseLandmarker.POSE_CONNECTIONS
+          );
+        }
+        canvasCtx.restore();
+      }
+    );
+  }, [canvasRef, webcamRef, lastVideoTime, poseLandmarker]);
 
   useEffect(() => {
     const createPoseLandmarker = async () => {
@@ -59,9 +84,45 @@ export default function CameraBox() {
         numPoses: 2,
       });
       poseLandmarker.current = poseLandmarker1;
+
+      console.log("Loaded PoseLandmarker...", poseLandmarker.current);
+      setPoseLandmarkerLoaded(true);
     };
+
     createPoseLandmarker();
   }, []);
+
+  useEffect(() => {
+    if (
+      !cameraLoaded ||
+      !poseLandmarker.current ||
+      !canvasRef.current ||
+      !webcamRef.current ||
+      lastVideoTime.current == webcamRef.current?.video!.currentTime
+    ) {
+      console.log("Not ready to detect...");
+      console.log(
+        "cameraLoaded:",
+        cameraLoaded,
+        "poseLandmarker:",
+        poseLandmarker.current,
+        "canvasRef:",
+        canvasRef.current,
+        "webcamRef:",
+        webcamRef.current,
+        "lastVideoTime:",
+        lastVideoTime.current
+      );
+      return;
+    }
+    detectPoseInRealTime();
+  }, [
+    cameraLoaded,
+    poseLandmarkerLoaded,
+    canvasRef,
+    webcamRef,
+    detectPoseInRealTime,
+  ]);
 
   useEffect(() => {
     setIsDesktop(window.innerWidth >= 768);
@@ -72,12 +133,14 @@ export default function CameraBox() {
     : { width: 480, height: 640, facingMode: "user" };
 
   const handleUserMedia = () => {
+    setRecordingPermission(true);
+    console.log("User media loaded.");
     setTimeout(() => {
       setLoading(false);
       setCameraLoaded(true);
+      console.log("camera loaded");
     }, 1000);
   };
-
   return (
     <AnimatePresence>
       <div className="w-full min-h-screen flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
@@ -136,7 +199,6 @@ export default function CameraBox() {
                     </div>
                   )}
                   <Webcam
-                    mirrored
                     audio
                     muted
                     ref={webcamRef}
