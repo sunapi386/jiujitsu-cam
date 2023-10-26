@@ -73,4 +73,3 @@ jiujitsu.cam is a web application that uses webcam to capture video of your jiuj
 ## Author
 
 - Jason Sun ([@sunapi386](https://twitter.com/sunapi386))
-- Special thanks to Tyler Meyer ([@tmeyer_me](https://twitter.com/tmeyer_me)) for the foundational work on his project to build an AI interviewer, which inspired me to build this project.
