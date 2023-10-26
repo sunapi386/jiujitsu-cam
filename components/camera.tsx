@@ -36,38 +36,49 @@ export default function CameraBox() {
   // Before we can use PoseLandmarker class we must wait for it to finish
   // loading. Machine Learning models can be large and take a moment to
   // get everything needed to run.
+  const isActive = useRef(true);
 
   const detectPoseInRealTime = useCallback(async () => {
     console.log("Detecting...");
     const canvasCtx = canvasRef.current!.getContext("2d")!;
 
-    // Now let's start detecting the stream.
-    let startTimeMs = performance.now();
-    const drawingUtils = new DrawingUtils(canvasCtx);
-    lastVideoTime.current = webcamRef.current!.video?.currentTime!;
-    poseLandmarker.current!.detectForVideo(
-      webcamRef.current!.video!,
-      startTimeMs,
-      (result) => {
-        canvasCtx.save();
-        canvasCtx.clearRect(
-          0,
-          0,
-          canvasRef.current!.width,
-          canvasRef.current!.height
-        );
-        for (const landmark of result.landmarks) {
-          drawingUtils.drawLandmarks(landmark, {
-            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
-          });
-          drawingUtils.drawConnectors(
-            landmark,
-            PoseLandmarker.POSE_CONNECTIONS
+    const processFrame = () => {
+      // Now let's start detecting the stream.
+      let startTimeMs = performance.now();
+      const drawingUtils = new DrawingUtils(canvasCtx);
+      lastVideoTime.current = webcamRef.current!.video?.currentTime!;
+      poseLandmarker.current!.detectForVideo(
+        webcamRef.current!.video!,
+        startTimeMs,
+        (result) => {
+          canvasCtx.save();
+          canvasCtx.clearRect(
+            0,
+            0,
+            canvasRef.current!.width,
+            canvasRef.current!.height
           );
+          for (const landmark of result.landmarks) {
+            drawingUtils.drawLandmarks(landmark, {
+              radius: (data) =>
+                DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+            });
+            drawingUtils.drawConnectors(
+              landmark,
+              PoseLandmarker.POSE_CONNECTIONS
+            );
+          }
+          canvasCtx.restore();
         }
-        canvasCtx.restore();
+      );
+      // Check the active flag and recursively request the next animation frame
+      if (isActive.current) {
+        requestAnimationFrame(processFrame);
       }
-    );
+    };
+
+    // Start the loop
+    processFrame();
   }, [canvasRef, webcamRef, lastVideoTime, poseLandmarker]);
 
   useEffect(() => {
@@ -115,7 +126,14 @@ export default function CameraBox() {
       );
       return;
     }
+    isActive.current = true;
+
     detectPoseInRealTime();
+
+    // Cleanup: Set active flag to false when component unmounts
+    return () => {
+      isActive.current = false;
+    };
   }, [
     cameraLoaded,
     poseLandmarkerLoaded,
@@ -186,15 +204,16 @@ export default function CameraBox() {
                   </div>
                 )}
                 <div className="relative z-10 h-full w-full rounded-lg">
-                  <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
+                  {/* CLOCK timer section */}
+                  {/* <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
                     <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-sm font-medium text-gray-800">
                       {new Date(seconds * 1000).toISOString().slice(14, 19)} sec
                     </span>
-                  </div>
+                  </div> */}
                   {isVisible && ( // If the video is visible (on screen) we show it
                     <div className="block absolute top-[10px] sm:top-[20px] lg:top-[40px] left-auto right-[10px] sm:right-[20px] md:right-10 h-[80px] sm:h-[140px] md:h-[180px] aspect-video rounded z-20">
                       <div className="h-full w-full aspect-video rounded md:rounded-lg lg:rounded-xl">
-                        Pose:
+                        {/* Pose: RIGHT HAND SECTION */}
                       </div>
                     </div>
                   )}
