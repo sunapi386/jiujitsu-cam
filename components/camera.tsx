@@ -88,7 +88,7 @@ export default function CameraBox() {
       );
       const poseLandmarker1 = await PoseLandmarker.createFromOptions(vision, {
         baseOptions: {
-          modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
+          modelAssetPath: `/models/pose_landmarker_lite.task`,
           delegate: "GPU",
         },
         runningMode: "VIDEO",
