@@ -3,11 +3,14 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Webcam from "react-webcam";
 import {
   PoseLandmarker,
+  GestureRecognizer,
   FilesetResolver,
   DrawingUtils,
 } from "@mediapipe/tasks-vision";
 import { Switch } from "@headlessui/react";
 // https://developers.google.com/mediapipe/solutions/vision/pose_landmarker/web_js#video
+
+import { translateGestureToEmoji } from "@/utils/gestures";
 
 export default function CameraBox() {
   const [loading, setLoading] = useState(true);
@@ -27,7 +30,11 @@ export default function CameraBox() {
   const [isVisible, setIsVisible] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
   const poseLandmarker = useRef<PoseLandmarker | null>(null);
+  const gestureRecognizer = useRef<GestureRecognizer | null>(null);
   const [poseLandmarkerLoaded, setPoseLandmarkerLoaded] = useState(false);
+  const [gestureRecognizerLoaded, setGestureRecognizerLoaded] = useState(false);
+  const [detectedGesture, setDetectedGesture] = useState<string | null>(null);
+
   const [processingTime, setProcessingTime] = useState(0);
   const [selectedCamera, setSelectedCamera] = useState<string | null>(null);
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
@@ -60,7 +67,7 @@ export default function CameraBox() {
     getDevices();
   }, []);
 
-  const detectPoseInRealTime = useCallback(async () => {
+  const realTimeInference = useCallback(async () => {
     console.log("Detecting...");
     const canvasCtx = canvasRef.current!.getContext("2d")!;
 
@@ -104,6 +111,31 @@ export default function CameraBox() {
           canvasCtx.restore(); // Restoring the original state of the canvas, which undoes the mirroring transformation
         }
       );
+
+      const gestureRecognitionResult =
+        gestureRecognizer.current!.recognizeForVideo(
+          webcamRef.current!.video!,
+          startTimeMs
+        );
+
+      // View results in the console to see their format
+      if (gestureRecognitionResult.gestures.length > 0) {
+        const categoryName =
+          gestureRecognitionResult.gestures[0][0].categoryName;
+        const categoryScore = parseFloat(
+          (gestureRecognitionResult.gestures[0][0].score * 100).toString()
+        ).toFixed(2);
+        const handedness =
+          gestureRecognitionResult.handedness[0][0].displayName;
+
+        const summary = `Gesture: ${translateGestureToEmoji(
+          categoryName
+        )}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+        setDetectedGesture(summary);
+      } else {
+        setDetectedGesture(null);
+      }
+
       setProcessingTime(performance.now() - startTimeMs);
 
       // Check the active flag and recursively request the next animation frame
@@ -117,7 +149,7 @@ export default function CameraBox() {
   }, [mirror]);
 
   useEffect(() => {
-    const createPoseLandmarker = async () => {
+    const setupInference = async () => {
       const vision = await FilesetResolver.forVisionTasks(
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
       );
@@ -127,29 +159,45 @@ export default function CameraBox() {
           delegate: "GPU",
         },
         runningMode: "VIDEO",
-        numPoses: 2,
+        numPoses: 5,
+        minPoseDetectionConfidence: 0.5,
+        minPosePresenceConfidence: 0.5,
+        outputSegmentationMasks: true,
       });
       poseLandmarker.current = poseLandmarker1;
 
       setPoseLandmarkerLoaded(true);
+
+      const gestureRecognizer1 = await GestureRecognizer.createFromOptions(
+        vision,
+        {
+          baseOptions: {
+            modelAssetPath: `/models/gesture_recognizer.task`,
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+        }
+      );
+      gestureRecognizer.current = gestureRecognizer1;
+
+      setGestureRecognizerLoaded(true);
     };
 
-    createPoseLandmarker();
+    setupInference();
   }, []);
 
   useEffect(() => {
     if (
       !cameraLoaded ||
-      !poseLandmarker.current ||
-      !canvasRef.current ||
-      !webcamRef.current ||
-      lastVideoTime.current == webcamRef.current?.video!.currentTime
+      lastVideoTime.current == webcamRef.current?.video!.currentTime ||
+      !poseLandmarkerLoaded ||
+      !gestureRecognizerLoaded
     ) {
       return;
     }
     isActive.current = true;
 
-    detectPoseInRealTime();
+    realTimeInference();
 
     // Cleanup: Set active flag to false when component unmounts
     return () => {
@@ -157,10 +205,9 @@ export default function CameraBox() {
     };
   }, [
     cameraLoaded,
+    gestureRecognizerLoaded,
     poseLandmarkerLoaded,
-    canvasRef,
-    webcamRef,
-    detectPoseInRealTime,
+    realTimeInference,
   ]);
 
   useEffect(() => {
@@ -309,7 +356,8 @@ export default function CameraBox() {
                     <div className="block absolute top-[10px] sm:top-[20px] lg:top-[40px] left-auto right-[10px] sm:right-[20px] md:right-10 h-[80px] sm:h-[140px] md:h-[180px] aspect-video rounded z-20">
                       <div className="h-full w-full aspect-video rounded md:rounded-lg lg:rounded-xl">
                         {/* Pose: RIGHT HAND SECTION */}
-                        {processingTime.toFixed(0)}ms
+                        inference: {processingTime.toFixed(0)} ms
+                        {detectedGesture}
                       </div>
                     </div>
                   )}
