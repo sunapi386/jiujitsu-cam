@@ -27,13 +27,38 @@ export default function CameraBox() {
   const [isVisible, setIsVisible] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
   const poseLandmarker = useRef<PoseLandmarker | null>(null);
-  const [predictionsEnabled, setPredictionsEnabled] = useState(false);
   const [poseLandmarkerLoaded, setPoseLandmarkerLoaded] = useState(false);
+  const [processingTime, setProcessingTime] = useState(0);
+  const [selectedCamera, setSelectedCamera] = useState<string | null>(null);
+  const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
 
   // Before we can use PoseLandmarker class we must wait for it to finish
   // loading. Machine Learning models can be large and take a moment to
   // get everything needed to run.
   const isActive = useRef(true);
+
+  useEffect(() => {
+    async function getDevices() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+        console.error("MediaDevices or enumerateDevices is not supported");
+        return;
+      }
+
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
+        setCameraDevices(videoDevices);
+        if (videoDevices.length) setSelectedCamera(videoDevices[0].deviceId);
+      } catch (error) {
+        console.error("Error getting devices:", error);
+      }
+    }
+
+    getDevices();
+  }, []);
 
   const detectPoseInRealTime = useCallback(async () => {
     console.log("Detecting...");
@@ -79,6 +104,7 @@ export default function CameraBox() {
           canvasCtx.restore(); // Restoring the original state of the canvas, which undoes the mirroring transformation
         }
       );
+      setProcessingTime(performance.now() - startTimeMs);
 
       // Check the active flag and recursively request the next animation frame
       if (isActive.current) {
@@ -142,8 +168,8 @@ export default function CameraBox() {
   }, []);
 
   const videoConstraints = isDesktop
-    ? { width: 1280, height: 720, facingMode: "user" }
-    : { width: 480, height: 640, facingMode: "user" };
+    ? { width: 1280, height: 720, facingMode: facingMode }
+    : { width: 480, height: 640, facingMode: facingMode };
 
   const handleUserMedia = () => {
     setRecordingPermission(true);
@@ -206,6 +232,45 @@ export default function CameraBox() {
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
                   Pause video
                 </p>
+                {cameraDevices.length > 1 && (
+                  <div>
+                    <select
+                      value={selectedCamera || undefined}
+                      onChange={(e) => setSelectedCamera(e.target.value)}
+                    >
+                      {cameraDevices.map((device) => (
+                        <option key={device.deviceId} value={device.deviceId}>
+                          {device.label || `Camera ${device.deviceId}`}
+                        </option>
+                      ))}
+                    </select>
+
+                    <Switch
+                      onChange={() => {
+                        setFacingMode(
+                          facingMode === "user" ? "environment" : "user"
+                        );
+                      }}
+                      checked={facingMode === "environment"}
+                      className={`${
+                        facingMode === "environment"
+                          ? "bg-green-600"
+                          : "bg-green-100"
+                      } relative inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                      <span
+                        className={`${
+                          facingMode === "environment"
+                            ? "translate-x-6"
+                            : "translate-x-1"
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                      />
+                    </Switch>
+                    <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
+                      Rear camera
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="relative aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md">
                 {!cameraLoaded && (
@@ -234,15 +299,17 @@ export default function CameraBox() {
                   </div>
                 )}
                 <div className="relative z-10 h-full w-full rounded-lg">
-                  {/* <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
+                  {/* CLOCK timer section */}
+                  <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
                     <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-sm font-medium text-gray-800">
                       {new Date(seconds * 1000).toISOString().slice(14, 19)} sec
                     </span>
-                  </div> */}
+                  </div>
                   {isVisible && ( // If the video is visible (on screen) we show it
                     <div className="block absolute top-[10px] sm:top-[20px] lg:top-[40px] left-auto right-[10px] sm:right-[20px] md:right-10 h-[80px] sm:h-[140px] md:h-[180px] aspect-video rounded z-20">
                       <div className="h-full w-full aspect-video rounded md:rounded-lg lg:rounded-xl">
                         {/* Pose: RIGHT HAND SECTION */}
+                        {processingTime.toFixed(0)}ms
                       </div>
                     </div>
                   )}
@@ -309,8 +376,7 @@ export default function CameraBox() {
               <div className="relative md:aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md flex flex-col items-center justify-center">
                 <p className="text-white font-medium text-lg text-center max-w-3xl">
                   Camera permission is denied. We don{`'`}t store your attempts
-                  anywhere, but we understand not wanting to give us access to
-                  your camera. Try again by opening this page in an incognito
+                  anywhere. Try again by opening this page in an incognito
                   window {`(`}or enable permissions in your browser settings
                   {`)`}.
                 </p>
