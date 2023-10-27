@@ -75,7 +75,7 @@ export default function Home() {
           </motion.div>
 
           <div className="flex gap-[15px] mt-8 md:mt-0">
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -115,9 +115,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </span>
-                Star on Github
+                Try it out
               </Link>
-            </motion.div>
+            </motion.div> */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}

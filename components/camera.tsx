@@ -15,6 +15,7 @@ export default function CameraBox() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastVideoTime = useRef(-1);
   const [mirror, setMirror] = useState(false);
+  const [stopCamera, setStopCamera] = useState(false);
 
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -104,7 +105,6 @@ export default function CameraBox() {
       });
       poseLandmarker.current = poseLandmarker1;
 
-      console.log("Loaded PoseLandmarker...", poseLandmarker.current);
       setPoseLandmarkerLoaded(true);
     };
 
@@ -119,19 +119,6 @@ export default function CameraBox() {
       !webcamRef.current ||
       lastVideoTime.current == webcamRef.current?.video!.currentTime
     ) {
-      console.log("Not ready to detect...");
-      console.log(
-        "cameraLoaded:",
-        cameraLoaded,
-        "poseLandmarker:",
-        poseLandmarker.current,
-        "canvasRef:",
-        canvasRef.current,
-        "webcamRef:",
-        webcamRef.current,
-        "lastVideoTime:",
-        lastVideoTime.current
-      );
       return;
     }
     isActive.current = true;
@@ -164,9 +151,18 @@ export default function CameraBox() {
     setTimeout(() => {
       setLoading(false);
       setCameraLoaded(true);
-      console.log("camera loaded");
-    }, 1000);
+      console.log("Camera loaded.");
+    }, 500);
   };
+
+  useEffect(() => {
+    if (stopCamera) {
+      webcamRef.current!.video!.pause();
+    } else {
+      webcamRef.current!.video!.play();
+    }
+  }, [stopCamera]);
+
   return (
     <AnimatePresence>
       <div className="w-full min-h-screen flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
@@ -177,16 +173,7 @@ export default function CameraBox() {
               <span className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal mb-4">
                 Settings
               </span>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.15,
-                  ease: [0.23, 1, 0.82, 1],
-                }}
-                className="flex flex-row space-x-1 mt-4 items-center"
-              >
+              <div className="flex flex-row space-x-1 mt-4 items-center">
                 <Switch
                   checked={mirror}
                   onChange={setMirror}
@@ -203,16 +190,24 @@ export default function CameraBox() {
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
                   Mirror
                 </p>
-              </motion.div>
-              <motion.div
-                initial={{ y: -20 }}
-                animate={{ y: 0 }}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.075, 0.82, 0.965, 1],
-                }}
-                className="relative aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md"
-              >
+                <Switch
+                  checked={stopCamera}
+                  onChange={setStopCamera}
+                  className={`${
+                    stopCamera ? "bg-red-600" : "bg-red-100"
+                  } relative inline-flex h-6 w-11 items-center rounded-full`}
+                >
+                  <span
+                    className={`${
+                      stopCamera ? "translate-x-6" : "translate-x-1"
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                  />
+                </Switch>
+                <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
+                  Pause video
+                </p>
+              </div>
+              <div className="relative aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md">
                 {!cameraLoaded && (
                   // Camera is loading...
                   <div className="text-white absolute top-1/2 left-1/2 z-20 flex items-center">
@@ -239,7 +234,6 @@ export default function CameraBox() {
                   </div>
                 )}
                 <div className="relative z-10 h-full w-full rounded-lg">
-                  {/* CLOCK timer section */}
                   {/* <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
                     <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-sm font-medium text-gray-800">
                       {new Date(seconds * 1000).toISOString().slice(14, 19)} sec
@@ -288,17 +282,8 @@ export default function CameraBox() {
                     </div>
                   </div>
                 )}
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.15,
-                  ease: [0.23, 1, 0.82, 1],
-                }}
-                className="flex flex-row space-x-1 mt-4 items-center"
-              >
+              </div>
+              <div className="flex flex-row space-x-1 mt-4 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -317,19 +302,11 @@ export default function CameraBox() {
                   Video is not stored on our servers, it is solely used for
                   detection.
                 </p>
-              </motion.div>
+              </div>
             </div>
           ) : (
             <div className="w-full flex flex-col max-w-[1080px] mx-auto justify-center">
-              <motion.div
-                initial={{ y: 20 }}
-                animate={{ y: 0 }}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.075, 0.82, 0.165, 1],
-                }}
-                className="relative md:aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md flex flex-col items-center justify-center"
-              >
+              <div className="relative md:aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md flex flex-col items-center justify-center">
                 <p className="text-white font-medium text-lg text-center max-w-3xl">
                   Camera permission is denied. We don{`'`}t store your attempts
                   anywhere, but we understand not wanting to give us access to
@@ -337,7 +314,7 @@ export default function CameraBox() {
                   window {`(`}or enable permissions in your browser settings
                   {`)`}.
                 </p>
-              </motion.div>
+              </div>
             </div>
           )}
         </div>
