@@ -12,7 +12,11 @@ import { Switch } from "@headlessui/react";
 
 import { translateGestureToEmoji } from "@/utils/gestures";
 
-export default function CameraBox() {
+interface CameraBoxProps {
+  link: string;
+}
+
+export default function CameraBox({ link }: CameraBoxProps) {
   const [loading, setLoading] = useState(true);
   const webcamRef = useRef<Webcam | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -277,7 +281,7 @@ export default function CameraBox() {
                   />
                 </Switch>
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                  Pause video
+                  Pause video for {link}
                 </p>
                 {cameraDevices.length > 1 && (
                   <div>

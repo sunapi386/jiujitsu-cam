@@ -1,6 +1,6 @@
 // Copyright 2023 The MediaPipe Authors.
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 
 // Can't import directly here because Nextjs does SSR.
@@ -14,7 +14,7 @@ const Demo: React.FC = () => {
 
   return (
     <>
-      <CameraBox />
+      <CameraBox link="demo" />
       {/* <section ref={demosSectionRef} className="invisible">
         <video ref={videoRef} controls autoPlay playsInline muted loop />
         <canvas ref={canvasElementRef} />
