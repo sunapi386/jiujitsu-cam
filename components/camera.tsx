@@ -355,12 +355,17 @@ export default function CameraBox() {
                   {isVisible && ( // If the video is visible (on screen) we show it
                     <div className="block absolute top-[10px] sm:top-[20px] lg:top-[40px] left-auto right-[10px] sm:right-[20px] md:right-10 h-[80px] sm:h-[140px] md:h-[180px] aspect-video rounded z-20">
                       <div className="h-full w-full aspect-video rounded md:rounded-lg lg:rounded-xl">
-                        {/* Pose: RIGHT HAND SECTION */}
+                        {/* Pose: TOP RIGHT, HAND GESTURE SECTION */}
                         inference: {processingTime.toFixed(0)} ms
-                        {detectedGesture}
                       </div>
                     </div>
                   )}
+                  <div className="block absolute bottom-[10px] sm:bottom-[20px] lg:bottom-[40px] left-auto right-[10px] sm:right-[20px] md:right-10 h-[80px] sm:h-[140px] md:h-[180px] aspect-video rounded z-20">
+                    <div className="h-full w-full aspect-video rounded md:rounded-lg lg:rounded-xl">
+                      {/* Pose: BOTTOM RIGHT SECTION */}
+                      {detectedGesture}
+                    </div>
+                  </div>
                   <Webcam
                     mirrored={mirror}
                     audio
