@@ -245,11 +245,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
       <div className="w-full min-h-screen flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
         <div className="h-full w-full items-center flex flex-col mt-[10vh]">
           {recordingPermission ? (
-            <div className="w-full flex flex-col max-w-[1080px] mx-auto justify-center">
-              <h2 className="text-2xl font-semibold text-left text-[#1D2B3A] mb-2"></h2>
-              <span className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal mb-4">
-                Settings
-              </span>
+            <div className="w-full flex flex-col max-w-screen-xl mx-auto justify-center">
               <div className="flex flex-row space-x-1 mt-4 items-center">
                 <Switch
                   checked={mirror}
@@ -323,7 +319,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
                   </div>
                 )}
               </div>
-              <div className="relative aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md">
+              <div className="relative aspect-[16/9] w-full max-w-screen-xl overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md">
                 {!cameraLoaded && (
                   // Camera is loading...
                   <div className="text-white absolute top-1/2 left-1/2 z-20 flex items-center">
@@ -429,8 +425,8 @@ export default function CameraBox({ link }: CameraBoxProps) {
               </div>
             </div>
           ) : (
-            <div className="w-full flex flex-col max-w-[1080px] mx-auto justify-center">
-              <div className="relative md:aspect-[16/9] w-full max-w-[1080px] overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md flex flex-col items-center justify-center">
+            <div className="w-full flex flex-col max-w-screen-xl mx-auto justify-center">
+              <div className="relative md:aspect-[16/9] w-full max-w-screen-xl overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md flex flex-col items-center justify-center">
                 <p className="text-white font-medium text-lg text-center max-w-3xl">
                   Camera permission is denied. We don{`'`}t store your attempts
                   anywhere. Try again by opening this page in an incognito
