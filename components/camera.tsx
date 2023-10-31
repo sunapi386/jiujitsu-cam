@@ -23,6 +23,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
   const lastVideoTime = useRef(-1);
   const [mirror, setMirror] = useState(false);
   const [stopCamera, setStopCamera] = useState(false);
+  const [gestureEnabled, setGestureEnabled] = useState(false);
 
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -116,28 +117,30 @@ export default function CameraBox({ link }: CameraBoxProps) {
         }
       );
 
-      const gestureRecognitionResult =
-        gestureRecognizer.current!.recognizeForVideo(
-          webcamRef.current!.video!,
-          startTimeMs
-        );
+      if (gestureEnabled) {
+        const gestureRecognitionResult =
+          gestureRecognizer.current!.recognizeForVideo(
+            webcamRef.current!.video!,
+            startTimeMs
+          );
 
-      // View results in the console to see their format
-      if (gestureRecognitionResult.gestures.length > 0) {
-        const categoryName =
-          gestureRecognitionResult.gestures[0][0].categoryName;
-        const categoryScore = parseFloat(
-          (gestureRecognitionResult.gestures[0][0].score * 100).toString()
-        ).toFixed(2);
-        const handedness =
-          gestureRecognitionResult.handedness[0][0].displayName;
+        // View results in the console to see their format
+        if (gestureRecognitionResult.gestures.length > 0) {
+          const categoryName =
+            gestureRecognitionResult.gestures[0][0].categoryName;
+          const categoryScore = parseFloat(
+            (gestureRecognitionResult.gestures[0][0].score * 100).toString()
+          ).toFixed(2);
+          const handedness =
+            gestureRecognitionResult.handedness[0][0].displayName;
 
-        const summary = `Gesture: ${translateGestureToEmoji(
-          categoryName
-        )}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
-        setDetectedGesture(summary);
-      } else {
-        setDetectedGesture(null);
+          const summary = `Gesture: ${translateGestureToEmoji(
+            categoryName
+          )}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+          setDetectedGesture(summary);
+        } else {
+          setDetectedGesture(null);
+        }
       }
 
       setProcessingTime(performance.now() - startTimeMs);
@@ -150,7 +153,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
 
     // Start the loop
     processFrame();
-  }, [mirror]);
+  }, [mirror, gestureEnabled]);
 
   useEffect(() => {
     const setupInference = async () => {
@@ -163,10 +166,10 @@ export default function CameraBox({ link }: CameraBoxProps) {
           delegate: "GPU",
         },
         runningMode: "VIDEO",
-        numPoses: 5,
+        numPoses: 2,
         minPoseDetectionConfidence: 0.5,
         minPosePresenceConfidence: 0.5,
-        outputSegmentationMasks: true,
+        outputSegmentationMasks: false, // We don't need segmentation masks yet
       });
       poseLandmarker.current = poseLandmarker1;
 
@@ -248,6 +251,22 @@ export default function CameraBox({ link }: CameraBoxProps) {
             <div className="w-full flex flex-col max-w-screen-xl mx-auto justify-center">
               <div className="flex flex-row space-x-1 mt-4 items-center">
                 <Switch
+                  checked={gestureEnabled}
+                  onChange={setGestureEnabled}
+                  className={`${
+                    gestureEnabled ? "bg-blue-600" : "bg-gray-200"
+                  } relative inline-flex h-6 w-11 items-center rounded-full`}
+                >
+                  <span
+                    className={`${
+                      gestureEnabled ? "translate-x-6" : "translate-x-1"
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                  />
+                </Switch>
+                <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
+                  Gesture detect
+                </p>
+                <Switch
                   checked={mirror}
                   onChange={setMirror}
                   className={`${
@@ -261,7 +280,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
                   />
                 </Switch>
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                  Mirror
+                  Mirror video
                 </p>
                 <Switch
                   checked={stopCamera}
