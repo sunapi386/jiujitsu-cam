@@ -242,7 +242,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
 
   return (
     <AnimatePresence>
-      <div className="w-full min-h-screen flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
+      <div className="w-full min-h-full flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
         <div className="h-full w-full items-center flex flex-col mt-[10vh]">
           {recordingPermission ? (
             <div className="w-full flex flex-col max-w-screen-xl mx-auto justify-center">
@@ -322,7 +322,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
               <div className="relative aspect-[16/9] w-full max-w-screen-xl overflow-hidden bg-[#1D2B3A] rounded-lg ring-1 ring-gray-900/5 shadow-md">
                 {!cameraLoaded && (
                   // Camera is loading...
-                  <div className="text-white absolute top-1/2 left-1/2 z-20 flex items-center">
+                  <div className="text-white absolute top-1/2 left-1/2  flex items-center">
                     <svg
                       className="animate-spin h-4 w-4 text-white mx-auto my-0.5"
                       xmlns="http://www.w3.org/2000/svg"
@@ -345,7 +345,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
                     </svg>
                   </div>
                 )}
-                <div className="relative z-10 h-full w-full rounded-lg">
+                <div className="relative h-full w-full rounded-lg">
                   {/* CLOCK timer section */}
                   <div className="absolute top-5 lg:top-10 left-5 lg:left-10 z-20">
                     <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-sm font-medium text-gray-800">

@@ -1,21 +1,15 @@
-// Copyright 2023 The MediaPipe Authors.
-
 import React from "react";
-import dynamic from "next/dynamic";
-
-// Can't import directly here because Nextjs does SSR.
-// import CameraBox from "@/components/camera";
-// https://stackoverflow.com/questions/66096260/why-am-i-getting-referenceerror-self-is-not-defined-when-i-import-a-client-side
+import { SideDrawer } from "@/components/sideDrawer";
+import { ContentInterview } from "@/components/contentInterview";
 
 const Demo: React.FC = () => {
-  const CameraBox = dynamic(() => import("@/components/camera"), {
-    ssr: false,
-  });
-
   return (
-    <>
-      <CameraBox link="demo" />
-      {/* <section ref={demosSectionRef} className="invisible">
+    <div className="flex h-screen bg-gray-100">
+      <SideDrawer />
+      <div className="flex-1 p-6">
+        <ContentInterview />
+
+        {/* <section ref={demosSectionRef} className="invisible">
         <video ref={videoRef} controls autoPlay playsInline muted loop />
         <canvas ref={canvasElementRef} />
         {!webcamRunning ? (
@@ -24,7 +18,8 @@ const Demo: React.FC = () => {
           <button onClick={stopWebcam}>Stop Webcam</button>
         )}
       </section> */}
-    </>
+      </div>
+    </div>
   );
 };
 
