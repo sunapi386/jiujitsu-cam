@@ -17,9 +17,7 @@ const MeetLinkPage: React.FC = () => {
     <div className="flex h-screen bg-gray-100">
       <SideDrawer />
       <div className="flex-1 p-6">
-        <div className="bg-white text-[#667380] p-[18px] flex flex-col">
-          <CameraBox link={link} />
-        </div>
+        <CameraBox link={link} />
       </div>
     </div>
   );

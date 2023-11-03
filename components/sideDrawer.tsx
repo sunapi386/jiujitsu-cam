@@ -17,7 +17,9 @@ import {
   OrderedList,
   UnorderedList,
 } from "@chakra-ui/react";
-import { MdAccountBox, MdSettings } from "react-icons/md";
+import { MdAccountBox, MdPreview } from "react-icons/md";
+import { GiMirrorMirror } from "react-icons/gi";
+import { IoLibraryOutline } from "react-icons/io5";
 
 interface SidebarSubItemProps {
   label: string;
@@ -62,11 +64,6 @@ const MenuIconItem: React.FC<SidebarMenuIconItemProps> = ({ icon, label }) => {
   );
 };
 
-const PlaceholderIcon: React.FC = () => {
-  return (
-    <span className="h-4 w-4 bg-gray-300 rounded"></span> // Just a placeholder, replace with real icons.
-  );
-};
 export const SideDrawer: React.FC = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
@@ -87,23 +84,21 @@ export const SideDrawer: React.FC = () => {
             <SubItem label="Historical Data" />
 
             <MenuIconItem
-              icon={<VideoCameraIcon className="h-4 w-4 text-gray-700" />}
+              icon={<GiMirrorMirror className="h-4 w-4 text-gray-700" />}
               label="Training Data"
             />
             <SubItem pos="top" label="Upload Videos" />
             <SubItem label="Annotated Movements" />
 
             <MenuIconItem
-              icon={<VideoCameraIcon className="h-4 w-4 text-gray-700" />}
+              icon={<MdPreview className="h-4 w-4 text-gray-700" />}
               label="Practice Reviews"
             />
             <SubItem pos="top" label="Recent Sessions" />
             <SubItem label="Feedback & Tips" />
 
             <MenuIconItem
-              icon={
-                <QuestionMarkCircleIcon className="h-4 w-4 text-gray-700" />
-              }
+              icon={<IoLibraryOutline className="h-4 w-4 text-gray-700" />}
               label="Technique Library"
             />
             <SubItem pos="top" label="Common Techniques" />
@@ -150,9 +145,9 @@ export const SideDrawer: React.FC = () => {
         // Floating button to show the sidebar
         <button
           onClick={() => setIsSidebarVisible(true)}
-          className="bg-blue-600 text-white p-3 rounded-full fixed bottom-4 left-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="bg-gray-600 text-white p-3 rounded-full fixed bottom-4 left-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          <WindowIcon className="h-5 w-5" />
+          <AdjustmentsHorizontalIcon className="h-5 w-5" />
         </button>
       )}
     </>
