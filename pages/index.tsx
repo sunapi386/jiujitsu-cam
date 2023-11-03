@@ -88,9 +88,9 @@ const Home = () => {
               <Text fontSize="xl" color="white">
                 Tools to help coaches and students to improve techniques.
               </Text>
-              <Button size="lg" variant="outline" colorScheme="white">
+              {/* <Button size="lg" variant="outline" colorScheme="white">
                 Join Waitlist
-              </Button>
+              </Button> */}
             </VStack>
           </Container>
         </Box>
