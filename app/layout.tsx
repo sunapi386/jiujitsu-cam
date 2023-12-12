@@ -1,27 +1,27 @@
 import "../styles/globals.css";
 import { Metadata } from "next";
 
+const name = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "jiujitsu.cam";
+
 export const metadata: Metadata = {
-  title: "jiujitsu.cam - AI-Powered Movement Feedback",
+  title: `${name} - AI-Powered Movement Feedback`,
   openGraph: {
-    title: "jiujitsu.cam - AI-Powered Movement Feedback",
-    description:
-      "jiujitsu.cam is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.",
+    title: `${name} - AI-Powered Movement Feedback`,
+    description: `${name} is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.`,
     images: [
       {
-        url: "https://jiujitsu.cam/opengraph-image",
+        url: `https://${name}/opengraph-image`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "jiujitsu.cam - AI-Powered Movement Feedback",
-    description:
-      "jiujitsu.cam is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.",
-    images: ["https://jiujitsu.cam/opengraph-image"],
+    title: `${name} - AI-Powered Movement Feedback`,
+    description: `${name} is an AI-driven platform providing insights and feedback on your jiujitsu movements to refine your techniques.`,
+    images: [`https://${name}/opengraph-image`],
     creator: "@sunapi386",
   },
-  metadataBase: new URL("https://jiujitsu.cam"),
+  metadataBase: new URL(`https://${name}`),
   themeColor: "#FFF",
 };
 

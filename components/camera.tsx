@@ -11,6 +11,7 @@ import { Switch } from "@headlessui/react";
 // https://developers.google.com/mediapipe/solutions/vision/pose_landmarker/web_js#video
 
 import { translateGestureToEmoji } from "@/utils/gestures";
+import WebGLCanvasPlot, { Point3D } from "./plotter";
 
 interface CameraBoxProps {
   link: string;
@@ -24,6 +25,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
   const [mirror, setMirror] = useState(false);
   const [stopCamera, setStopCamera] = useState(false);
   const [gestureEnabled, setGestureEnabled] = useState(false);
+  const [landmarks, setLandmarks] = useState<Point3D[]>([]);
 
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -112,6 +114,8 @@ export default function CameraBox({ link }: CameraBoxProps) {
               PoseLandmarker.POSE_CONNECTIONS
             );
           }
+
+          setLandmarks(result.landmarks[0]);
 
           canvasCtx.restore(); // Restoring the original state of the canvas, which undoes the mirroring transformation
         }
@@ -245,8 +249,8 @@ export default function CameraBox({ link }: CameraBoxProps) {
 
   return (
     <AnimatePresence>
-      <div className="w-full min-h-full flex flex-col px-4 pt-2 pb-8 md:px-8 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
-        <div className="h-full w-full items-center flex flex-col mt-[10vh]">
+      <div className="w-full min-h-full flex flex-col px-2 pt-1 pb-4 md:px-4 md:py-2 bg-[#FCFCFC] relative overflow-x-hidden">
+        <div className="h-full w-full items-center flex flex-col mt-[5vh]">
           {recordingPermission ? (
             <div className="w-full flex flex-col max-w-screen-xl mx-auto justify-center">
               <div className="flex flex-row space-x-1 mt-4 items-center">
@@ -411,6 +415,7 @@ export default function CameraBox({ link }: CameraBoxProps) {
                       zIndex: 10,
                     }}
                   ></canvas>
+                  {/* Canvas end */}
                 </div>
                 {loading && (
                   <div className="absolute flex h-full w-full items-center justify-center">

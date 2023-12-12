@@ -1,32 +1,29 @@
 import React, { useState } from "react";
+import Link from "next/link"; // Import Link for navigation
 import {
-  WindowIcon,
-  HomeIcon,
+  AdjustmentsHorizontalIcon,
   VideoCameraIcon,
-  QuestionMarkCircleIcon,
   UsersIcon,
   BookOpenIcon,
   Cog6ToothIcon,
-  AdjustmentsHorizontalIcon,
+  LightBulbIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
-import {
-  List,
-  ListItem,
-  ListIcon,
-  Text,
-  OrderedList,
-  UnorderedList,
-} from "@chakra-ui/react";
-import { MdAccountBox, MdPreview } from "react-icons/md";
+import { Text } from "@chakra-ui/react";
+import { MdAccountBox } from "react-icons/md";
 import { GiMirrorMirror } from "react-icons/gi";
 import { IoLibraryOutline } from "react-icons/io5";
+import { HomeIcon } from "@heroicons/react/24/outline";
+import { TbLogout } from "react-icons/tb";
+import { FaClipboardList } from "react-icons/fa";
+import { HiOutlineDesktopComputer } from "react-icons/hi";
 
 interface SidebarSubItemProps {
-  label: string;
+  name: string;
   pos?: "top" | "mid" | "bot";
 }
 
-const SubItem: React.FC<SidebarSubItemProps> = ({ label, pos }) => {
+const SubItem: React.FC<SidebarSubItemProps> = ({ name: label, pos }) => {
   let vbar;
   if (pos === "top") {
     vbar = (
@@ -51,18 +48,53 @@ const SubItem: React.FC<SidebarSubItemProps> = ({ label, pos }) => {
 };
 
 interface SidebarMenuIconItemProps {
-  icon: React.ReactNode;
-  label: string;
+  href: string;
+  icon?: React.ElementType;
+  name: string;
 }
 
-const MenuIconItem: React.FC<SidebarMenuIconItemProps> = ({ icon, label }) => {
+const MenuIconItem: React.FC<SidebarMenuIconItemProps> = ({
+  href,
+  icon: Icon,
+  name,
+}) => {
   return (
-    <li className="mt-1 list-none flex items-center rounded-[9px] text-gray-900 py-[4px]">
-      {icon}
-      <p className="ml-[3px] mr-[6px]">{label}</p>
-    </li>
+    <Link href={href} passHref>
+      <li className="mt-1 list-none flex items-center rounded-[9px] text-gray-900 py-[4px] pl-3 cursor-pointer hover:bg-[#F7F7F8]">
+        {Icon && (
+          <span className="flex-shrink-0">
+            <Icon className="h-5 w-5 text-gray-700" />
+          </span>
+        )}
+        <span className="ml-[3px] mr-[6px]">{name}</span>
+      </li>
+    </Link>
   );
 };
+
+const sidebarItems: SidebarMenuIconItemProps[] = [
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  {
+    name: "Live Analysis",
+    href: "/v",
+    icon: VideoCameraIcon,
+  },
+  {
+    name: "Technique Library",
+    href: "/library",
+    icon: ChartBarIcon,
+  },
+  {
+    name: "Session Insights & AI Analysis",
+    href: "/analysis",
+    icon: LightBulbIcon,
+  },
+  {
+    name: "Learning Modules",
+    href: "/modules",
+    icon: HiOutlineDesktopComputer,
+  },
+];
 
 export const SideDrawer: React.FC = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -74,64 +106,21 @@ export const SideDrawer: React.FC = () => {
           className="bg-white flex flex-col text-[#1a2b3b] p-[18px] rounded-lg relative w-64"
           style={{ boxShadow: "inset -1px 0 0 #fff" }}
         >
-          <Text fontSize="xl">BJJ Ace</Text>
+          <Text fontSize="xl" fontWeight="bold" mb={4}>
+            BJJ Ace
+          </Text>
           <ul className="mb-auto list-none">
-            <MenuIconItem
-              icon={<VideoCameraIcon className="h-4 w-4 text-gray-700" />}
-              label="Movement Detection"
-            />
-            <SubItem pos="top" label="Real-time Analysis" />
-            <SubItem label="Historical Data" />
-
-            <MenuIconItem
-              icon={<GiMirrorMirror className="h-4 w-4 text-gray-700" />}
-              label="Training Data"
-            />
-            <SubItem pos="top" label="Upload Videos" />
-            <SubItem label="Annotated Movements" />
-
-            <MenuIconItem
-              icon={<MdPreview className="h-4 w-4 text-gray-700" />}
-              label="Practice Reviews"
-            />
-            <SubItem pos="top" label="Recent Sessions" />
-            <SubItem label="Feedback & Tips" />
-
-            <MenuIconItem
-              icon={<IoLibraryOutline className="h-4 w-4 text-gray-700" />}
-              label="Technique Library"
-            />
-            <SubItem pos="top" label="Common Techniques" />
-            <SubItem label="User Submissions" />
-
-            <MenuIconItem
-              icon={<UsersIcon className="h-4 w-4 text-gray-700" />}
-              label="Community"
-            />
-            <SubItem pos="top" label="Discussion Forums" />
-            <SubItem label="Expert Tips" />
-
-            <MenuIconItem
-              icon={<BookOpenIcon className="h-4 w-4 text-gray-700" />}
-              label="Resources"
-            />
-            <SubItem pos="top" label="Learning Modules" />
-            <SubItem label="Tutorials" />
-
-            <MenuIconItem
-              icon={<Cog6ToothIcon className="h-4 w-4 text-gray-700" />}
-              label="Settings"
-            />
-            <SubItem pos="top" label="Camera Setup" />
-            <SubItem label="Profile & Preferences" />
-
-            {/* END */}
+            <ul className="mb-auto list-none">
+              {sidebarItems.map(({ name, href, icon: UIcon }) => (
+                <MenuIconItem key={name} icon={UIcon} name={name} href={href} />
+              ))}
+            </ul>
           </ul>
           <ul className="flex flex-col mb-[10px]">
             <hr className="border-[#e8e8ed] w-full" />
             <li className="mt-1 list-none flex items-center rounded-[9px] text-gray-900 py-[2px]">
               <MdAccountBox className="h-4 w-4 text-gray-700" />
-              <p className="ml-[4px] mr-[6px] flex-shrink-0">Jason Sun</p>
+              <p className="ml-[4px] mr-[6px] flex-shrink-0">User</p>
               <div className="ml-auto">
                 <AdjustmentsHorizontalIcon
                   className="h-4 w-4 text-gray-700 cursor-pointer"
@@ -142,7 +131,6 @@ export const SideDrawer: React.FC = () => {
           </ul>
         </div>
       ) : (
-        // Floating button to show the sidebar
         <button
           onClick={() => setIsSidebarVisible(true)}
           className="bg-gray-600 text-white p-3 rounded-full fixed bottom-4 left-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
