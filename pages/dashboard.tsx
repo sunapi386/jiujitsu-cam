@@ -13,6 +13,7 @@ import {
 import { SideDrawer } from "@/components/sideDrawer";
 import Statistics from "@/components/Statistics";
 import PoseAnalysis from "@/components/PoseAnalysis";
+import RecentLessons from "@/components/RecentLessons";
 
 function Dashboard() {
   const [isLoading, setLoading] = useState(true);
@@ -61,7 +62,8 @@ function Dashboard() {
                 {/* Mockup content for Recent Lessons */}
                 <Box p={4} bg="white" boxShadow="md">
                   {/* Placeholder content */}
-                  <Text>Recent Lessons Content Goes Here</Text>
+                  <Text>Recent Lessons</Text>
+                  <RecentLessons />
                 </Box>
               </TabPanel>
               <TabPanel>
