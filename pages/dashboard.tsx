@@ -11,6 +11,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { SideDrawer } from "@/components/sideDrawer";
+import Statistics from "@/components/Statistics";
 
 function Dashboard() {
   const [isLoading, setLoading] = useState(true);
@@ -41,7 +42,8 @@ function Dashboard() {
                 {/* Mockup content for Jiu-Jitsu statistics */}
                 <Box p={4} bg="white" boxShadow="md">
                   {/* Placeholder content */}
-                  <Text>Statistics Content Goes Here</Text>
+                  <Text>Statistics Of Your Training</Text>
+                  <Statistics />
                 </Box>
               </TabPanel>
               <TabPanel>
