@@ -84,16 +84,16 @@ const sidebarItems: SidebarMenuIconItemProps[] = [
     href: "/library",
     icon: ChartBarIcon,
   },
-  {
-    name: "Session Insights & AI Analysis",
-    href: "/analysis",
-    icon: LightBulbIcon,
-  },
-  {
-    name: "Learning Modules",
-    href: "/modules",
-    icon: HiOutlineDesktopComputer,
-  },
+  // {
+  //   name: "Statistics",
+  //   href: "/statistics",
+  //   icon: LightBulbIcon,
+  // },
+  // {
+  //   name: "Learning Modules",
+  //   href: "/modules",
+  //   icon: HiOutlineDesktopComputer,
+  // },
 ];
 
 export const SideDrawer: React.FC = () => {
