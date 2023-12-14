@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { SideDrawer } from "@/components/sideDrawer";
 import Statistics from "@/components/Statistics";
+import PoseAnalysis from "@/components/PoseAnalysis";
 
 function Dashboard() {
   const [isLoading, setLoading] = useState(true);
@@ -51,7 +52,8 @@ function Dashboard() {
                 {/* Mockup content for Pose Analysis */}
                 <Box p={4} bg="white" boxShadow="md">
                   {/* Placeholder content */}
-                  <Text>Pose Analysis Content Goes Here</Text>
+                  <Text>Pose Analysis Content</Text>
+                  <PoseAnalysis />
                 </Box>
               </TabPanel>
               <TabPanel>
