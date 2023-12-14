@@ -14,6 +14,7 @@ import { SideDrawer } from "@/components/sideDrawer";
 import Statistics from "@/components/Statistics";
 import PoseAnalysis from "@/components/PoseAnalysis";
 import RecentLessons from "@/components/RecentLessons";
+import CommunityFeed from "@/components/CommunityFeed";
 
 function Dashboard() {
   const [isLoading, setLoading] = useState(true);
@@ -71,7 +72,8 @@ function Dashboard() {
                 {/* Mockup content for Community Feed */}
                 <Box p={4} bg="white" boxShadow="md">
                   {/* Placeholder content */}
-                  <Text>Community Feed Content Goes Here</Text>
+                  <Text>Community Feed News</Text>
+                  <CommunityFeed />
                 </Box>
               </TabPanel>
             </TabPanels>
