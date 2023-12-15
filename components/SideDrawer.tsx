@@ -125,7 +125,7 @@ export const SideDrawer: React.FC = () => {
             <hr className="border-[#e8e8ed] w-full" />
             <li className="mt-1 list-none flex items-center rounded-[9px] text-gray-900 py-[2px]">
               <MdAccountBox className="h-4 w-4 text-gray-700" />
-              <p className="ml-[4px] mr-[6px] flex-shrink-0">User</p>
+              <p className="ml-[4px] mr-[6px] flex-shrink-0">Not Logged In</p>
               <div className="ml-auto">
                 <AdjustmentsHorizontalIcon
                   className="h-4 w-4 text-gray-700 cursor-pointer"
