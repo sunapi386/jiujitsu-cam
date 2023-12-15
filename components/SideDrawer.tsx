@@ -3,20 +3,16 @@ import Link from "next/link";
 import {
   AdjustmentsHorizontalIcon,
   VideoCameraIcon,
-  UsersIcon,
   BookOpenIcon,
   Cog6ToothIcon,
-  LightBulbIcon,
-  ChartBarIcon,
 } from "@heroicons/react/24/outline";
-import { Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { MdAccountBox } from "react-icons/md";
 import { GiMirrorMirror } from "react-icons/gi";
 import { IoLibraryOutline } from "react-icons/io5";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { TbLogout } from "react-icons/tb";
-import { FaClipboardList } from "react-icons/fa";
-import { HiOutlineDesktopComputer } from "react-icons/hi";
+import LoginModal from "./LoginModal";
+import SignupModal from "./SignupModal";
 
 interface SidebarSubItemProps {
   name: string;
@@ -103,6 +99,19 @@ const sidebarItems: SidebarMenuIconItemProps[] = [
 
 export const SideDrawer: React.FC = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [isLoginOpen, setLoginOpen] = useState(false);
+  const [isSignupOpen, setSignupOpen] = useState(false);
+
+  const openLogin = () => setLoginOpen(true);
+  const closeLogin = () => setLoginOpen(false);
+
+  const openSignup = () => {
+    closeLogin(); // Close the login modal first
+    setSignupOpen(true);
+  };
+  const closeSignup = () => setSignupOpen(false);
+
+  const loggedIn = false;
 
   return (
     <>
@@ -125,7 +134,15 @@ export const SideDrawer: React.FC = () => {
             <hr className="border-[#e8e8ed] w-full" />
             <li className="mt-1 list-none flex items-center rounded-[9px] text-gray-900 py-[2px]">
               <MdAccountBox className="h-4 w-4 text-gray-700" />
-              <p className="ml-[4px] mr-[6px] flex-shrink-0">Not Logged In</p>
+              {loggedIn ? (
+                <div>
+                  <p className="ml-[4px] mr-[6px] flex-shrink-0">Logged In</p>
+                </div>
+              ) : (
+                <div>
+                  <Button onClick={openLogin}>Login</Button>
+                </div>
+              )}
               <div className="ml-auto">
                 <AdjustmentsHorizontalIcon
                   className="h-4 w-4 text-gray-700 cursor-pointer"
@@ -143,6 +160,12 @@ export const SideDrawer: React.FC = () => {
           <AdjustmentsHorizontalIcon className="h-5 w-5" />
         </button>
       )}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={closeLogin}
+        onSignupClick={openSignup}
+      />
+      <SignupModal isOpen={isSignupOpen} onClose={closeSignup} />
     </>
   );
 };

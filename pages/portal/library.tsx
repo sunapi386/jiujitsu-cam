@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
 
 import { Spinner } from "@chakra-ui/react";
-import { SideDrawer } from "@/components/SideDrawer";
 import PortalLayout from "@/components/PortalLayout";
 
 function Library() {
@@ -394,7 +393,8 @@ function Library() {
         },
       ],
       layout: {
-        name: "grid",
+        name: "breadthfirst",
+        directed: true,
       },
     });
   }, []);

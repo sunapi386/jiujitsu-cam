@@ -5,7 +5,7 @@ import { SideDrawer } from "./SideDrawer";
 import { Alert, AlertIcon, Box, CloseButton } from "@chakra-ui/react";
 
 const PortalLayout = ({ children }: { children: React.ReactNode }) => {
-  const [showAlert, setShowAlert] = React.useState(true); // State to control the alert visibility
+  const [showAlert, setShowAlert] = React.useState(true);
 
   return (
     <div className="flex h-screen">
@@ -16,9 +16,8 @@ const PortalLayout = ({ children }: { children: React.ReactNode }) => {
             <AlertIcon />
             <Box flex="1">
               <p>
-                You are viewing a preview with fake data. To access full
-                features, please
-                <strong> sign up</strong> or <strong>log in</strong>.
+                You are viewing preview data. To access full features, please
+                log in.
               </p>
             </Box>
             <CloseButton
