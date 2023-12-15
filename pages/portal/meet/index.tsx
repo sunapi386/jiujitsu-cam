@@ -8,7 +8,7 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 function DemoRedirect() {
   const router = useRouter();
 
-  const link = `/portal/v/${generateMeetLink()}`;
+  const link = `/portal/meet/${generateMeetLink()}`;
 
   useEffect(() => {
     router.replace(link);
