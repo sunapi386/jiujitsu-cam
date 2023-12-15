@@ -73,7 +73,7 @@ const Statistics = () => {
   };
 
   return (
-    <Box p={4} bg="white" boxShadow="md">
+    <Box>
       <Heading mb={4}>Jiu-Jitsu Training Statistics</Heading>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Box>

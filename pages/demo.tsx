@@ -11,7 +11,7 @@ const WebGLCanvasPlot = dynamic(() => import("../components/plotter"), {
 
 const Demo: React.FC = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <SideDrawer />
       <div className="flex-1 p-6">
         {/* <ContentInterview /> */}

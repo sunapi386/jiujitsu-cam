@@ -15,7 +15,7 @@ const PortalIndex = () => {
 
   return (
     <PortalLayout>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex h-screen">
         <div className="flex-1 p-6">
           {isLoading ? (
             <Box className="flex justify-center items-center h-full">

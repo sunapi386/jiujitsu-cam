@@ -28,7 +28,7 @@ const lessonsMockData = [
 
 const RecentLessons = () => {
   return (
-    <Box p={4} bg="white" boxShadow="md">
+    <Box>
       <Heading mb={4}>Recent Lessons</Heading>
       <VStack spacing={4} align="stretch">
         {lessonsMockData.map((lesson) => (

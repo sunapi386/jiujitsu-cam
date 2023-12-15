@@ -35,7 +35,7 @@ const feedMockData = [
 
 const CommunityFeed = () => {
   return (
-    <Box p={4} bg="white" boxShadow="md">
+    <Box>
       <Heading mb={4}>Community Feed</Heading>
       <VStack spacing={4} align="stretch">
         {feedMockData.map((post) => (
