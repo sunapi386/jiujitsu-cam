@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {
   Spinner,
-  Text,
   Box,
   Tab,
   TabList,
@@ -41,38 +40,22 @@ function Dashboard() {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Text fontSize="xl">Your Jiu-Jitsu Statistics</Text>
-                {/* Mockup content for Jiu-Jitsu statistics */}
                 <Box p={4} bg="white" boxShadow="md">
-                  {/* Placeholder content */}
-                  <Text>Statistics Of Your Training</Text>
                   <Statistics />
                 </Box>
               </TabPanel>
               <TabPanel>
-                <Text fontSize="xl">Pose Analysis</Text>
-                {/* Mockup content for Pose Analysis */}
                 <Box p={4} bg="white" boxShadow="md">
-                  {/* Placeholder content */}
-                  <Text>Pose Analysis Content</Text>
                   <PoseAnalysis />
                 </Box>
               </TabPanel>
               <TabPanel>
-                <Text fontSize="xl">Recent Lessons</Text>
-                {/* Mockup content for Recent Lessons */}
                 <Box p={4} bg="white" boxShadow="md">
-                  {/* Placeholder content */}
-                  <Text>Recent Lessons</Text>
                   <RecentLessons />
                 </Box>
               </TabPanel>
               <TabPanel>
-                <Text fontSize="xl">Community Feed</Text>
-                {/* Mockup content for Community Feed */}
                 <Box p={4} bg="white" boxShadow="md">
-                  {/* Placeholder content */}
-                  <Text>Community Feed News</Text>
                   <CommunityFeed />
                 </Box>
               </TabPanel>

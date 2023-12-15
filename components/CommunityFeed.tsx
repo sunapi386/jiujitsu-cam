@@ -17,7 +17,7 @@ const feedMockData = [
     userName: "JohnDoe123",
     postTime: "2 hours ago",
     content: "Just learned a new armbar technique!",
-    imageUrl: "/path/to/armbar-technique.jpg", // Replace with actual image path
+    imageUrl: "/poses/48-1.pose.jpg",
     likes: 12,
     comments: 3,
   },
@@ -26,7 +26,7 @@ const feedMockData = [
     userName: "MartialArtist42",
     postTime: "1 day ago",
     content: "Tips for improving your guard game",
-    imageUrl: "/path/to/guard-game.jpg", // Replace with actual image path
+    imageUrl: "/poses/125-1.pose.jpg",
     likes: 20,
     comments: 5,
   },
@@ -45,12 +45,7 @@ const CommunityFeed = () => {
               <Text color="gray.500">- {post.postTime}</Text>
             </HStack>
             <Text mb={2}>{post.content}</Text>
-            <Image
-              boxSize="full"
-              objectFit="cover"
-              src={post.imageUrl}
-              alt="Post image"
-            />
+            <Image objectFit="none" src={post.imageUrl} alt="Post image" />
             <HStack mt={2}>
               <IconButton
                 aria-label="like"

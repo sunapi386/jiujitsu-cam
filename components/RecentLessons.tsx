@@ -15,16 +15,15 @@ const lessonsMockData = [
     title: "Guard Basics",
     description: "Introduction to Guard position and techniques",
     date: "2023-01-15",
-    imageUrl: "/path/to/guard-basics.jpg", // Replace with actual image path
+    imageUrl: "/poses/219-3.pose.jpg",
   },
   {
     id: 2,
     title: "Armbar Techniques",
     description: "Mastering the Armbar from various positions",
     date: "2023-01-22",
-    imageUrl: "/path/to/armbar-techniques.jpg", // Replace with actual image path
+    imageUrl: "/poses/176-2.pose.jpg",
   },
-  // Add more lessons as needed
 ];
 
 const RecentLessons = () => {

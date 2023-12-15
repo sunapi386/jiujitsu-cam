@@ -403,11 +403,14 @@ function Library() {
       <SideDrawer />
       <div className="flex-1 p-6">
         <div>Technique Library</div>
-        <div
-          ref={cyRef}
-          style={{ width: "1000px", height: "1000px", background: "white" }}
-        />
-        <Spinner size="xl" />
+        {cyRef ? (
+          <div
+            ref={cyRef}
+            style={{ width: "1000px", height: "1000px", background: "white" }}
+          />
+        ) : (
+          <Spinner size="xl" />
+        )}
       </div>
     </div>
   );
