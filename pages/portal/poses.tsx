@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Spinner, Box } from "@chakra-ui/react";
-import CommunityFeed from "@/components/CommunityFeed";
+import PoseAnalysis from "@/components/PoseAnalysis";
 
 import PortalLayout from "../../components/PortalLayout";
 
@@ -22,7 +22,7 @@ const PortalIndex = () => {
               <Spinner size="xl" />
             </Box>
           ) : (
-            <CommunityFeed />
+            <PoseAnalysis />
           )}
         </div>
       </div>

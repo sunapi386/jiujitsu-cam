@@ -76,24 +76,29 @@ const sidebarItems: SidebarMenuIconItemProps[] = [
   { name: "Home", href: "/portal", icon: HomeIcon },
   {
     name: "Live Analysis",
-    href: "/portal/v",
+    href: "/portal/meet",
     icon: VideoCameraIcon,
   },
   {
-    name: "Technique Library",
+    name: "Library",
     href: "/portal/library",
-    icon: ChartBarIcon,
+    icon: IoLibraryOutline,
   },
-  // {
-  //   name: "Statistics",
-  //   href: "/statistics",
-  //   icon: LightBulbIcon,
-  // },
-  // {
-  //   name: "Learning Modules",
-  //   href: "/modules",
-  //   icon: HiOutlineDesktopComputer,
-  // },
+  {
+    name: "Stats",
+    href: "/portal/stats",
+    icon: Cog6ToothIcon,
+  },
+  {
+    name: "Lessons",
+    href: "/portal/lessons",
+    icon: BookOpenIcon,
+  },
+  {
+    name: "Poses",
+    href: "/portal/poses",
+    icon: GiMirrorMirror,
+  },
 ];
 
 export const SideDrawer: React.FC = () => {
