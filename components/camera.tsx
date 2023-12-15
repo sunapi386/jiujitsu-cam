@@ -82,6 +82,8 @@ export default function CameraBox({ link }: CameraBoxProps) {
       // Now let's start detecting the stream.
       let startTimeMs = performance.now();
       const drawingUtils = new DrawingUtils(canvasCtx);
+      if (webcamRef.current?.video?.currentTime === undefined) return;
+
       lastVideoTime.current = webcamRef.current!.video?.currentTime!;
 
       poseLandmarker.current!.detectForVideo(
