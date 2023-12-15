@@ -3,7 +3,8 @@ import React, { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
 
 import { Spinner } from "@chakra-ui/react";
-import { SideDrawer } from "@/components/sideDrawer";
+import { SideDrawer } from "@/components/SideDrawer";
+import PortalLayout from "@/components/PortalLayout";
 
 function Library() {
   const cyRef = useRef(null);
@@ -399,20 +400,17 @@ function Library() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <SideDrawer />
-      <div className="flex-1 p-6">
-        <div>Technique Library</div>
-        {cyRef ? (
-          <div
-            ref={cyRef}
-            style={{ width: "1000px", height: "1000px", background: "white" }}
-          />
-        ) : (
-          <Spinner size="xl" />
-        )}
-      </div>
-    </div>
+    <PortalLayout>
+      <div>Technique Library</div>
+      {cyRef ? (
+        <div
+          ref={cyRef}
+          style={{ width: "1000px", height: "1000px", background: "white" }}
+        />
+      ) : (
+        <Spinner size="xl" />
+      )}
+    </PortalLayout>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Link from "next/link"; // Import Link for navigation
+import Link from "next/link";
 import {
   AdjustmentsHorizontalIcon,
   VideoCameraIcon,
@@ -73,15 +73,15 @@ const MenuIconItem: React.FC<SidebarMenuIconItemProps> = ({
 };
 
 const sidebarItems: SidebarMenuIconItemProps[] = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  { name: "Home", href: "/portal", icon: HomeIcon },
   {
     name: "Live Analysis",
-    href: "/v",
+    href: "/portal/v",
     icon: VideoCameraIcon,
   },
   {
     name: "Technique Library",
-    href: "/library",
+    href: "/portal/library",
     icon: ChartBarIcon,
   },
   // {
@@ -103,7 +103,7 @@ export const SideDrawer: React.FC = () => {
     <>
       {isSidebarVisible ? (
         <div
-          className="bg-white flex flex-col text-[#1a2b3b] p-[18px] rounded-lg relative w-64"
+          className="bg-gray-50 flex flex-col text-[#1a2b3b] p-[18px] rounded-lg relative w-64"
           style={{ boxShadow: "inset -1px 0 0 #fff" }}
         >
           <Text fontSize="xl" fontWeight="bold" mb={4}>

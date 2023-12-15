@@ -1,5 +1,5 @@
 import React from "react";
-import { SideDrawer } from "@/components/sideDrawer";
+import { SideDrawer } from "@/components/SideDrawer";
 import { ContentInterview } from "@/components/contentInterview";
 import { worldLandmarks, landmarksData } from "@/data/landmarks";
 import dynamic from "next/dynamic";

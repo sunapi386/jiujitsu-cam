@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import { SideDrawer } from "@/components/sideDrawer";
+import PortalLayout from "@/components/PortalLayout";
 
 const MeetLinkPage: React.FC = () => {
   const CameraBox = dynamic(() => import("@/components/camera"), {
@@ -14,12 +14,9 @@ const MeetLinkPage: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <SideDrawer />
-      <div className="flex-1 p-6">
-        <CameraBox link={link} />
-      </div>
-    </div>
+    <PortalLayout>
+      <CameraBox link={link} />
+    </PortalLayout>
   );
 };
 

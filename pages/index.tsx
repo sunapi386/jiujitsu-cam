@@ -47,7 +47,7 @@ const Home = () => {
               <span className="text-[#407BBF]"></span>
               <span className="font-inter text-[#407BBF]"> with AI</span>
             </motion.h1>
-            <Link href={`/dashboard`}>
+            <Link href={`/portal`}>
               <Button size="lg" colorScheme="blue">
                 Try it out
               </Button>
